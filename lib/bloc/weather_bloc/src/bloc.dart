@@ -6,26 +6,36 @@ import 'package:wetter_app/data/repository/weather_repository.dart';
 import 'package:wetter_app/res/strings.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
-  final WeatherRepository _weatherRepository;
-  final LocationRepository _locationRepository;
+  final WeatherRepository _weatherRepository = WeatherRepository();
+  final LocationRepository _locationRepository = LocationRepository();
 
-  WeatherBloc(this._weatherRepository, this._locationRepository)
-      : super(WeatherState.loading());
+  WeatherBloc() : super(WeatherState.loading(WeatherDay.Today));
 
   @override
   Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
-    if (event is GetCurrentInitialWeather) {
+    if (event is GetWeatherByLocation) {
+      yield WeatherState.loading(event.weatherDay);
       final location = await _locationRepository.getLocation();
       try {
-        final weather = await _weatherRepository.getCurrentWeatherByLocation(
+        final weather = await _weatherRepository.getWeatherByLocation(
+          event.weatherDay,
           location!.latitude!,
           location.longitude!,
         );
-        yield WeatherState.current(weather);
+        if (weather != null) {
+          yield WeatherState.current(
+            weather,
+            event.weatherDay,
+          );
+        } else {
+          yield WeatherState.error(Strings.weatherError, event.weatherDay);
+        }
       } catch (e) {
-        yield WeatherState.error(Strings.locationError);
+        yield WeatherState.error(Strings.locationError, event.weatherDay);
         return;
       }
     }
   }
 }
+
+enum WeatherDay { Today, Tomorrow }

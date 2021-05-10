@@ -1,11 +1,11 @@
+import 'package:wetter_app/bloc/weather_bloc/weather_bloc.dart';
+
 class WeatherEvent {}
 
-class GetCurrentInitialWeather extends WeatherEvent {}
+class GetWeatherByLocation extends WeatherEvent {
+  final WeatherDay weatherDay;
 
-class GetCurrentWeatherByLocation extends WeatherEvent {}
+  GetWeatherByLocation(this.weatherDay);
+}
 
 class GetCurrentWeatherByCity extends WeatherEvent {}
-
-class GetForecastWeatherByLocation extends WeatherEvent {}
-
-class GetForecastWeatherByCity extends WeatherEvent {}

@@ -23,8 +23,11 @@ class LocationRepository {
         return null;
       }
     }
-
-    _locationData = await _location.getLocation();
+    try {
+      _locationData = await _location.getLocation();
+    } catch (e) {
+      return null;
+    }
     return _locationData;
   }
 }

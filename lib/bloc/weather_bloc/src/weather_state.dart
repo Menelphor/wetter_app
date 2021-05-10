@@ -1,30 +1,38 @@
 import 'package:equatable/equatable.dart';
-import 'package:weather/weather.dart';
+import 'package:wetter_app/bloc/weather_bloc/weather_bloc.dart';
+import 'package:wetter_app/data/model/weather_tbd.dart';
 
 class WeatherState extends Equatable {
   final bool loading;
-  final Weather? weather;
-  final List<Weather>? foreCast;
+  final WeatherTbd? weather;
   final String? error;
+  final WeatherDay weatherDay;
 
-  WeatherState(this.loading, this.weather, this.foreCast, this.error);
+  WeatherState(this.loading, this.weather, this.weatherDay, this.error);
 
-  factory WeatherState.loading() => WeatherState(true, null, null, null);
+  factory WeatherState.loading(WeatherDay weatherDay) =>
+      WeatherState(true, null, weatherDay, null);
 
-  factory WeatherState.current(Weather current) =>
-      WeatherState(false, current, null, null);
+  factory WeatherState.current(WeatherTbd current, WeatherDay weatherDay) =>
+      WeatherState(false, current, weatherDay, null);
 
-  factory WeatherState.forecast(Weather current, List<Weather> forecast) =>
-      WeatherState(false, current, forecast, null);
-
-  factory WeatherState.error(String error) =>
-      WeatherState(false, null, null, error);
+  factory WeatherState.error(String error, WeatherDay weatherDay) =>
+      WeatherState(false, null, weatherDay, error);
 
   @override
-  List<Object> get props => [
+  String toString() {
+    String returnString = loading.toString();
+    if (weather != null) {
+      returnString += " " + weather.toString();
+    }
+
+    return returnString;
+  }
+
+  @override
+  List<Object?> get props => [
         loading,
-        weather?.toString() ?? "",
-        (foreCast ?? []).map((e) => e.toString()).toList().join(),
-        error ?? ""
+        weather,
+        error,
       ];
 }
