@@ -23,7 +23,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           location.longitude!,
         );
         if (weather != null) {
-          yield WeatherState.current(
+          yield WeatherState.dataLoaded(
             weather,
             event.weatherDay,
           );
@@ -32,7 +32,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         }
       } catch (e) {
         yield WeatherState.error(Strings.locationError, event.weatherDay);
-        return;
       }
     }
   }

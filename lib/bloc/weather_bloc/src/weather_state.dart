@@ -4,7 +4,7 @@ import 'package:wetter_app/data/model/weather_tbd.dart';
 
 class WeatherState extends Equatable {
   final bool loading;
-  final WeatherTbd? weather;
+  final WeatherViewModel? weather;
   final String? error;
   final WeatherDay weatherDay;
 
@@ -13,8 +13,8 @@ class WeatherState extends Equatable {
   factory WeatherState.loading(WeatherDay weatherDay) =>
       WeatherState(true, null, weatherDay, null);
 
-  factory WeatherState.current(WeatherTbd current, WeatherDay weatherDay) =>
-      WeatherState(false, current, weatherDay, null);
+  factory WeatherState.dataLoaded(WeatherViewModel weather, WeatherDay weatherDay) =>
+      WeatherState(false, weather, weatherDay, null);
 
   factory WeatherState.error(String error, WeatherDay weatherDay) =>
       WeatherState(false, null, weatherDay, error);

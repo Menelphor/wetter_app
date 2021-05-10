@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wetter_app/bloc/weather_bloc/weather_bloc.dart';
 import 'package:wetter_app/res/strings.dart';
 import 'package:wetter_app/ui/widgets/platform_dialog.dart';
@@ -11,38 +10,38 @@ class WeatherScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => WeatherBloc()..add(GetWeatherByLocation(WeatherDay.Today)),
-      child: BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: _BodyWidget(state),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: state.weatherDay.index,
-            selectedItemColor: Colors.yellow,
-            selectedLabelStyle: TextStyle(color: Colors.yellow),
-            unselectedItemColor: Colors.grey,
-            unselectedLabelStyle: TextStyle(color: Colors.grey),
-            items: [
-              BottomNavigationBarItem(
-                icon: Image(
-                  image: AssetImage("assets/Icon/Heute-weiß.png"),
-                ),
-                label: Strings.weatherDayToString[WeatherDay.Today],
-              ),
-              BottomNavigationBarItem(
-                icon: Image(
-                  image: AssetImage("assets/Icon/Morgen-weiß.png"),
-                ),
-                label: Strings.weatherDayToString[WeatherDay.Tomorrow],
-              )
-            ],
-            onTap: (value) => context.read<WeatherBloc>().add(
-                  GetWeatherByLocation(
-                    WeatherDay.values[value],
+      child: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: _BodyWidget(state),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: state.weatherDay.index,
+              selectedItemColor: Colors.yellow,
+              selectedLabelStyle: TextStyle(color: Colors.yellow),
+              unselectedItemColor: Colors.grey,
+              unselectedLabelStyle: TextStyle(color: Colors.grey),
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image(
+                    image: AssetImage("assets/Icon/Heute-weiß.png"),
                   ),
+                  label: Strings.weatherDayToString[WeatherDay.Today],
                 ),
-          ),
-        );
-      }),
+                BottomNavigationBarItem(
+                  icon: Image(
+                    image: AssetImage("assets/Icon/Morgen-weiß.png"),
+                  ),
+                  label: Strings.weatherDayToString[WeatherDay.Tomorrow],
+                ),
+              ],
+              onTap: (index) => context.read<WeatherBloc>().add(
+                    GetWeatherByLocation(WeatherDay.values[index]),
+                  ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -62,9 +61,7 @@ class _BodyWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Spacer(
-            flex: 1,
-          ),
+          Spacer(flex: 1),
           Text(
             state.weather!.city,
             textAlign: TextAlign.center,
@@ -75,15 +72,11 @@ class _BodyWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 24),
           ),
-          Spacer(
-            flex: 1,
-          ),
+          Spacer(flex: 1),
           state.weather?.asset != null
               ? Image(image: AssetImage(state.weather!.asset))
               : Container(),
-          Spacer(
-            flex: 1,
-          ),
+          Spacer(flex: 1),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

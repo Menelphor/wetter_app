@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:intl/intl.dart';
 
-class WeatherTbd {
+class WeatherViewModel {
   final String asset, city, description, day, temperature;
   final Map<String, String> temperatureList;
 
-  WeatherTbd._(
+  WeatherViewModel._(
     this.city,
     this.day,
     this.asset,
@@ -28,7 +28,7 @@ class WeatherTbd {
         " ";
   }
 
-  factory WeatherTbd({
+  factory WeatherViewModel({
     int? temp,
     String? icon,
     DateTime? date,
@@ -59,13 +59,13 @@ class WeatherTbd {
         "Die Höchsttemperatur wird bei " + tempMax.toString() + "°C liegen.";
 
     if (humidity != null) {
-      //TODO: Warum kommt die humi
+      //TODO: Warum kommt die humidity nicht
       description += "\nDie Luftfeuchtigkeit beträgt $humidity%.";
     }
 
     temperatureList.removeWhere((key, value) => value == null);
 
-    return WeatherTbd._(
+    return WeatherViewModel._(
       areaName ?? "",
       day,
       _iconToAsset[icon] ?? "",

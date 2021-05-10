@@ -9,14 +9,14 @@ class WeatherRepository {
     language: Language.GERMAN,
   );
 
-  Future<WeatherTbd?> getWeatherByLocation(
+  Future<WeatherViewModel?> getWeatherByLocation(
     WeatherDay weatherDay,
     double lat,
     double long,
   ) async {
     try {
       List<Weather> weatherList =
-          await weatherFactory.fiveDayForecastByLocation(lat, long);
+          await weatherFactory.fiveDayForecastByLocation(49.825702, 8.647984);
       final date = weatherDay == WeatherDay.Today
           ? DateTime.now()
           : DateTime.now().add(const Duration(days: 1));
@@ -38,7 +38,7 @@ class WeatherRepository {
           final actualWeather =
               await weatherFactory.currentWeatherByLocation(lat, long);
 
-          return WeatherTbd(
+          return WeatherViewModel(
             areaName: city,
             icon: actualWeather.weatherIcon,
             date: date,
@@ -53,7 +53,7 @@ class WeatherRepository {
             (element) => date.difference(element.date!).inHours < 3,
           );
 
-          return WeatherTbd(
+          return WeatherViewModel(
             areaName: city,
             icon: actualWeather.weatherIcon,
             date: date,
